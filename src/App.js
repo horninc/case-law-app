@@ -187,7 +187,7 @@ class App extends React.Component {
                      <p> <a href="https://github.com/NLeSC/case-law-app" target="_blank">Source code</a> </p>
                     </div>
                 </div>
-            
+
                 <div className="App-filter-pane">
                     <div className="App-form">
                         <LoadData
@@ -199,8 +199,8 @@ class App extends React.Component {
                     <FilterPane onChange={this.handleFilterChange}
                                 filterState={filterState}
                                 graphProps={graphProps} />
-            
-                 </div>   
+
+                 </div>
                 <div className="App-network">
                     <Network onChange={this.handleActiveNodeChange} filterState={filterState} selectedNode={activeNode}
                             onInitialization={this.setFilterValues} loading={loading} doneLoading={this.doneLoading}

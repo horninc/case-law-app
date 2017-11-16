@@ -117,6 +117,7 @@ class ForceAtlas2 extends React.Component {
         if (!sigma || !s) return
 
         let drawEdges = s.settings("drawEdges")
+        // Disable drawing edges for large networks
         if (s.graph.edges().length > 1000)
             s.settings({
                 drawEdges: false
