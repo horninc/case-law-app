@@ -10,13 +10,13 @@
         "react-scripts": "^0.7.0"
     },
     "dependencies": {
-        "papaparse": "^4.3.6",
         "colormap": "^2.3.0",
-        "rc-slider": "^8.1.5",
+        "papaparse": "^4.3.6",
+        "rc-slider": "^8.4.0",
         "react": "^15.6.2",
         "react-dom": "^15.6.2",
         "react-select": "^1.0.0-rc.5",
-        "react-sigma": "^1.2.27",
+        "react-sigma": "^1.2.29",
         "react-simple-file-input": "^1.0.0"
     },
     "scripts": {
