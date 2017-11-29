@@ -37,19 +37,19 @@ class DownloadData extends React.Component {
     const fileName = "nodes.csv";
     let blob = new Blob([csvContent], {
       type: "application/csv"
-    })
-    const url = URL.createObjectURL(blob)
-    this.saveAs(url, fileName)
+    });
+    const url = URL.createObjectURL(blob);
+    this.saveAs(url, fileName);
   }
 
   render() {
     /*<button type="button" onClick={this.onClick}>Load new data</button>*/
-    return ( <
-      button onClick = {
+    return ( <button
+      onClick={
         this.onDownload
-      } >
-      Download filtered nodes <
-      /button>
+      }
+    >
+      Download filtered nodes </button>
     );
   }
 }

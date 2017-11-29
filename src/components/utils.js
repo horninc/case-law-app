@@ -6,9 +6,9 @@ so you want to render an empty component. Just rendering 'null' gives errors in 
 */
 class EmptyComponent extends React.Component {
 
-    render() {
-        return null;
-    }
+  render() {
+    return null;
+  }
 }
 
 export default EmptyComponent;

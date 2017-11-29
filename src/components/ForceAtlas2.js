@@ -2,13 +2,13 @@
 Copied and adjusted from https://github.com/dunnock/react-sigma
 */
 
-import React from 'react'
-import sigma from 'react-sigma/sigma/main'
+import React from 'react';
+import sigma from 'react-sigma/sigma/main';
 import {
-    embedProps
-} from 'react-sigma/lib/tools'
-import 'react-sigma/sigma/layout.forceAtlas2'
-import 'react-sigma/sigma/plugins.animate'
+  embedProps
+} from 'react-sigma/lib/tools';
+import 'react-sigma/sigma/layout.forceAtlas2';
+import 'react-sigma/sigma/plugins.animate';
 
 type State = {
     running: boolean,
@@ -66,84 +66,84 @@ class ForceAtlas2 extends React.Component {
     state: State;
     props: Props;
     static defaultProps: DefaultProps = {
-        worker: true,
-        linLogMode: true
+      worker: true,
+      linLogMode: true
     }
 
-        constructor(props: Props) {
-        super(props)
-        this.state = {
-            running: true
-        }
+    constructor(props: Props) {
+      super(props);
+      this.state = {
+        running: true
+      };
     }
 
-        componentDidMount() {
-        this._refreshGraph()
+    componentDidMount() {
+      this._refreshGraph();
     }
 
-        componentDidUpdate(prevProps: Props, prevState: State) {
-        let s = this.props.sigma
-        if (prevState.running && !this.state.running && s) {
-            s.stopForceAtlas2()
-            s.settings({
-                drawEdges: prevState.drawEdges === false ? false : true
-            })
-            s.refresh();
-        }
+    componentDidUpdate(prevProps: Props, prevState: State) {
+      let s = this.props.sigma;
+      if (prevState.running && !this.state.running && s) {
+        s.stopForceAtlas2();
+        s.settings({
+          drawEdges: prevState.drawEdges === false ? false : true
+        });
+        s.refresh();
+      }
     }
 
-        componentWillUnmount() {
-        if (this.props.sigma) this.props.sigma.killForceAtlas2()
-        if (this.state.timer) clearTimeout(this.state.timer)
+    componentWillUnmount() {
+      if (this.props.sigma) {this.props.sigma.killForceAtlas2();}
+      if (this.state.timer) {clearTimeout(this.state.timer);}
     }
 
-        componentWillReceiveProps(nextProps) {
-        if (nextProps.rerun && !this.props.rerun) {
-            this._refreshGraph();
-        }
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.rerun && !this.props.rerun) {
+        this._refreshGraph();
+      }
     }
 
     //TODO: Add composition of child components after timeout
-        render() {
-        if (!this.state.running) {
-            return <div>{ embedProps(this.props.children, {sigma: this.props.sigma}) }</div>;
-        }
-        return null;
+    render() {
+      if (!this.state.running) {
+        return <div>{ embedProps(this.props.children, { sigma: this.props.sigma }) }</div>;
+      }
+      return null;
     }
 
 
-        _refreshGraph() {
-        let s = this.props.sigma
-        if (!sigma || !s) return
+    _refreshGraph() {
+      let s = this.props.sigma;
+      if (!sigma || !s) {return;}
 
-        let drawEdges = s.settings("drawEdges")
-        // Disable drawing edges for large networks
-        if (s.graph.edges().length > 1000)
-            s.settings({
-                drawEdges: false
-            })
+      let drawEdges = s.settings("drawEdges");
+      // Disable drawing edges for large networks
+      if (s.graph.edges().length > 1000)
+      {s.settings({
+        drawEdges: false
+      });}
 
-        s.startForceAtlas2(this._stripOptions(this.props));
-        // TODO: convert running status to state
-        let timer = setTimeout(() => {
-            this.setState({
-                running: false,
-                timer: undefined
-            })
-        }, this.props.timeout || s.graph.nodes().length * 8);
+      s.startForceAtlas2(this._stripOptions(this.props));
+      // TODO: convert running status to state
+      let timer = setTimeout(() => {
         this.setState({
-            running: true,
-            timer,
-            drawEdges
-        })
+          running: false,
+          timer: undefined
+        });
+      }, this.props.timeout || s.graph.nodes().length * 8);
+      this.setState({
+        running: true,
+        timer,
+        drawEdges
+      });
     }
 
     //strip force atlas options from component props
-        _stripOptions(props: Props): Props {
-        return Object.assign({}, props, {
-            sigma: undefined,
-            children: undefined
-        })
+    _stripOptions(props: Props): Props {
+      return Object.assign({}, props, {
+        sigma: undefined,
+        children: undefined
+      });
     }
 
 }

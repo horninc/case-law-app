@@ -1,255 +1,293 @@
 import React from 'react';
 import {
-    Component
+  Component
 } from 'react';
 import './FilterPane.css';
 import 'core-js/es6/weak-map';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Slider, {
-    Range
+  Range
 } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 class FilterPane extends Component {
 
-    constructor(props) {
-        super(props);
-        this.handleInDegreeChange = this.handleInDegreeChange.bind(this);
-        this.handleSubjectChange = this.handleSubjectChange.bind(this);
-        this.handleCreatorChange = this.handleCreatorChange.bind(this);
-        this.handleCommunityChange = this.handleCommunityChange.bind(this);
-        this.handleSliderChange = this.handleSliderChange.bind(this);
-        this.handleSizeAttributeChange = this.handleSizeAttributeChange.bind(this);
-        this.handleColorAttributeChange = this.handleColorAttributeChange.bind(this);
-        this.handleAdjustLayoutChange = this.handleAdjustLayoutChange.bind(this);
-        this.handleFilterSelectedChange = this.handleFilterSelectedChange.bind(this);
-        this.handleSliderAttributeChange = this.handleSliderAttributeChange.bind(this);
+  constructor(props) {
+    super(props);
+    this.handleInDegreeChange = this.handleInDegreeChange.bind(this);
+    this.handleSubjectChange = this.handleSubjectChange.bind(this);
+    this.handleCreatorChange = this.handleCreatorChange.bind(this);
+    this.handleCommunityChange = this.handleCommunityChange.bind(this);
+    this.handleSliderChange = this.handleSliderChange.bind(this);
+    this.handleSizeAttributeChange = this.handleSizeAttributeChange.bind(this);
+    this.handleColorAttributeChange = this.handleColorAttributeChange.bind(this);
+    this.handleAdjustLayoutChange = this.handleAdjustLayoutChange.bind(this);
+    this.handleFilterSelectedChange = this.handleFilterSelectedChange.bind(this);
+    this.handleSliderAttributeChange = this.handleSliderAttributeChange.bind(this);
+  }
+
+  handleInDegreeChange(range) {
+    const newState = {
+      inDegreeValue: range //parseInt(event.target.value, 10)
+    };
+    this.props.onChange(newState);
+  }
+
+  handleSliderChange(range) {
+    const newState = {
+      minSliderValue: range[0],
+      maxSliderValue: range[1]
+    };
+    this.props.onChange(newState);
+  }
+
+  handleAdjustLayoutChange(event) {
+    const newState = {
+      adjustLayout: event.target.checked
+    };
+    this.props.onChange(newState);
+  }
+
+  handleSubjectChange(value) {
+    const newState = {
+      subjectValue: value
+    };
+    this.props.onChange(newState);
+  }
+
+  handleCreatorChange(value) {
+    const newState = {
+      creatorValue: value
+    };
+    this.props.onChange(newState);
+  }
+
+  handleCommunityChange(value) {
+    const newState = {
+      communityValue: value
+    };
+    this.props.onChange(newState);
+  }
+
+  handleSliderAttributeChange(event) {
+    const newState = {
+      sliderAttributeValue: event.target.value,
+      minSliderValue: null,
+      maxSliderValue: null
+    };
+    this.props.onChange(newState);
+  }
+
+  handleSizeAttributeChange(event) {
+    const newState = {
+      sizeAttributeValue: event.target.value
+    };
+    this.props.onChange(newState);
+  }
+
+  handleColorAttributeChange(event) {
+    const newState = {
+      colorAttributeValue: event.target.value
+    };
+    this.props.onChange(newState);
+  }
+
+  handleFilterSelectedChange(event) {
+    const newState = {
+      filterSelected: event.target.checked
+    };
+    this.props.onChange(newState);
+  }
+
+  componentIsMounted() {
+    //Set the default values
+    const newState = {
+      minSliderValue: null,
+      maxSliderValue: null
+    };
+    this.props.onChange(newState);
+  }
+
+  render() {
+    if (this.props.graphProps) {
+      // Properties of the network, the possible filter values
+      const graphProps = this.props.graphProps;
+      const minInDegree = graphProps.minInDegree || 0;
+      const maxInDegree = graphProps.maxInDegree || 0;
+      const subjectCategories = graphProps.subjectCategories || {};
+      const creatorCategories = graphProps.creatorCategories || {};
+      const communityCategories = graphProps.communityCategories || {};
+
+      const subjectOptions = Object.keys(subjectCategories).map(
+        (option) => ({
+          value: option,
+          label: subjectCategories[option]
+        }));
+      const creatorOptions = Object.keys(creatorCategories).map(
+        (option) => ({
+          value: option,
+          label: creatorCategories[option]
+        }));
+      const sizeAttributes = graphProps.sizeAttributes || [];
+      const colorAttributes = graphProps.colorAttributes || [];
+      const listSizeAttributes = sizeAttributes.map(
+        (option) => (<option
+          key={option}
+          value={option}
+                     > {option} </option>)
+      );
+      const listColorAttributes = colorAttributes.map(
+        (option) => (<option
+          key={option}
+          value={option}
+                     > {option} </option>)
+      );
+      const sliderMinMaxValues = graphProps.sliderMinMaxValues || {};
+      const sliderAttributes = Object.keys(sliderMinMaxValues);
+      const listSliderAttributes = sliderAttributes.map(
+        (option) => (<option
+          key={option}
+          value={option}
+                     > {option} </option>)
+      );
+
+      // The current values
+      // TODO: adjust indegree to slider prop 
+      const inDegreeValue = this.props.filterState.inDegreeValue || [minInDegree, maxInDegree];
+      const minInDegreeValue = inDegreeValue[0];
+      const maxInDegreeValue = inDegreeValue[1];
+      const subjectValue = this.props.filterState.subjectValue;
+      const creatorValue = this.props.filterState.creatorValue;
+      const communityValue = this.props.filterState.communityValue;
+      const sizeAttributeValue = this.props.filterState.sizeAttributeValue;
+      const colorAttributeValue = this.props.filterState.colorAttributeValue;
+      const adjustLayout = this.props.filterState.adjustLayout;
+      const filterSelected = this.props.filterState.filterSelected; //|| false;
+      const sliderAttributeValue = this.props.filterState.sliderAttributeValue; // || 'year';
+
+      const slider_minmax = sliderMinMaxValues[sliderAttributeValue] || [0, 1];
+      const minSliderValue = this.props.filterState.minSliderValue || slider_minmax[0];
+      const maxSliderValue = this.props.filterState.maxSliderValue || slider_minmax[1];
+      let communityFilter = null;
+      if (Object.keys(communityCategories).length > 0) {
+        const communityOptions = Object.keys(communityCategories).map(
+          (option) => ({
+            value: option,
+            label: communityCategories[option]
+          }));
+
+        communityFilter = (<div>
+          <h4>Community</h4>
+          <Select
+            multi
+            name="community"
+            onChange={this.handleCommunityChange}
+            options={communityOptions}
+            placeholder="Select Community"
+            value={communityValue}
+          />
+        </div>);
+      }
+
+      return (
+        <div>
+          <h2>Filters</h2>
+          <form>
+            <div>
+              <h4>In-degree: {minInDegreeValue} - {maxInDegreeValue}</h4>
+              <Range
+                max={maxInDegree}
+                min={minInDegree}
+                onChange={this.handleInDegreeChange}
+                value={[minInDegreeValue, maxInDegreeValue]}
+              />
+            </div>
+            <div>
+              <h4><select
+                onChange={this.handleSliderAttributeChange}
+                value={sliderAttributeValue}
+                  >
+                {listSliderAttributes}
+              </select>: {minSliderValue} - {maxSliderValue}</h4>
+              <Range
+                max={slider_minmax[1]}
+                min={slider_minmax[0]}
+                onChange={this.handleSliderChange}
+                value={[minSliderValue, maxSliderValue]}
+              />
+            </div>
+            <div>
+              <label> Adjust layout for slider: 
+                <input
+                  checked={adjustLayout}
+                  name="adjustLayout"
+                  onChange={this.handleAdjustLayoutChange}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+            <div>
+              <h4>Rechtsgebied</h4>
+              <Select
+                multi
+                name="subject"
+                onChange={this.handleSubjectChange}
+                options={subjectOptions}
+                placeholder="Select Subject"
+                value={subjectValue}
+              />
+            </div>
+            <div>
+              <h4>Instantie</h4>
+              <Select
+                multi
+                name="creator"
+                onChange={this.handleCreatorChange}
+                options={creatorOptions}
+                placeholder="Select Creator"
+                value={creatorValue}
+              />
+            </div>
+            {communityFilter}
+            <div>
+              <h4>Selection </h4>
+              <label> Filter selected:
+                <input
+                  checked={filterSelected}
+                  name="filterSelected"
+                  onChange={this.handleFilterSelectedChange}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+            <h2> Appearances </h2>
+            <div>
+              <h4>Node Size</h4>
+              <select
+                onChange={this.handleSizeAttributeChange}
+                value={sizeAttributeValue}
+              >
+                {listSizeAttributes}
+              </select>
+            </div>
+            <div>
+              <h4>Node Color</h4>
+              <select
+                onChange={this.handleColorAttributeChange}
+                value={colorAttributeValue}
+              >
+                <option value="none">none</option>
+                {listColorAttributes}
+              </select>
+            </div>
+          </form>
+        </div>
+      );
+    } else {
+      return null;
     }
-
-    handleInDegreeChange(range) {
-        const newState = {
-            inDegreeValue: range //parseInt(event.target.value, 10)
-        };
-        this.props.onChange(newState);
-    }
-
-    handleSliderChange(range) {
-        const newState = {
-            minSliderValue: range[0],
-            maxSliderValue: range[1]
-        };
-        this.props.onChange(newState);
-    }
-
-    handleAdjustLayoutChange(event) {
-        const newState = {
-            adjustLayout: event.target.checked
-        };
-        this.props.onChange(newState);
-    }
-
-    handleSubjectChange(value) {
-        const newState = {
-            subjectValue: value
-        };
-        this.props.onChange(newState);
-    }
-
-    handleCreatorChange(value) {
-        const newState = {
-            creatorValue: value
-        };
-        this.props.onChange(newState);
-    }
-
-    handleCommunityChange(value) {
-        const newState = {
-            communityValue: value
-        };
-        this.props.onChange(newState);
-    }
-
-    handleSliderAttributeChange(event) {
-        const newState = {
-            sliderAttributeValue: event.target.value,
-            minSliderValue: null,
-            maxSliderValue: null
-        };
-        this.props.onChange(newState);
-    }
-
-    handleSizeAttributeChange(event) {
-        const newState = {
-            sizeAttributeValue: event.target.value
-        };
-        this.props.onChange(newState);
-    }
-
-    handleColorAttributeChange(event) {
-        const newState = {
-            colorAttributeValue: event.target.value
-        };
-        this.props.onChange(newState);
-    }
-
-    handleFilterSelectedChange(event) {
-        const newState = {
-            filterSelected: event.target.checked
-        };
-        this.props.onChange(newState);
-    }
-
-    componentIsMounted() {
-        //Set the default values
-        const newState = {
-            minSliderValue: null,
-            maxSliderValue: null
-        };
-        this.props.onChange(newState);
-    }
-
-    render() {
-        if (this.props.graphProps) {
-            // Properties of the network, the possible filter values
-            const graphProps = this.props.graphProps;
-            const minInDegree = graphProps.minInDegree || 0;
-            const maxInDegree = graphProps.maxInDegree || 0;
-            const subjectCategories = graphProps.subjectCategories || {};
-            const creatorCategories = graphProps.creatorCategories || {};
-            const communityCategories = graphProps.communityCategories || {};
-
-            const subjectOptions = Object.keys(subjectCategories).map(
-                (option) => ({
-                    value: option,
-                    label: subjectCategories[option]
-                }));
-            const creatorOptions = Object.keys(creatorCategories).map(
-                (option) => ({
-                    value: option,
-                    label: creatorCategories[option]
-                }));
-            const sizeAttributes = graphProps.sizeAttributes || [];
-            const colorAttributes = graphProps.colorAttributes || [];
-            const listSizeAttributes = sizeAttributes.map(
-                (option) => <option value={option} key={option}> {option} </option>
-            );
-            const listColorAttributes = colorAttributes.map(
-                (option) => <option value={option} key={option}> {option} </option>
-            );
-            const sliderMinMaxValues = graphProps.sliderMinMaxValues || {};
-            const sliderAttributes = Object.keys(sliderMinMaxValues);
-            const listSliderAttributes = sliderAttributes.map(
-                (option) => <option value={option} key={option}> {option} </option>
-            );
-
-            // The current values
-            // TODO: adjust indegree to slider prop 
-            const inDegreeValue = this.props.filterState.inDegreeValue || [minInDegree, maxInDegree];
-            const minInDegreeValue = inDegreeValue[0];
-            const maxInDegreeValue = inDegreeValue[1];
-            const subjectValue = this.props.filterState.subjectValue;
-            const creatorValue = this.props.filterState.creatorValue;
-            const communityValue = this.props.filterState.communityValue;
-            const sizeAttributeValue = this.props.filterState.sizeAttributeValue;
-            const colorAttributeValue = this.props.filterState.colorAttributeValue;
-            const adjustLayout = this.props.filterState.adjustLayout;
-            const filterSelected = this.props.filterState.filterSelected; //|| false;
-            const sliderAttributeValue = this.props.filterState.sliderAttributeValue; // || 'year';
-
-            const slider_minmax = sliderMinMaxValues[sliderAttributeValue] || [0, 1];
-            const minSliderValue = this.props.filterState.minSliderValue || slider_minmax[0];
-            const maxSliderValue = this.props.filterState.maxSliderValue || slider_minmax[1];
-            let communityFilter = null;
-            if (Object.keys(communityCategories).length > 0) {
-                const communityOptions = Object.keys(communityCategories).map(
-                    (option) => ({
-                        value: option,
-                        label: communityCategories[option]
-                    }));
-
-                communityFilter = <div>
-                    <h4>Community</h4>
-                          <Select
-                          name="community"
-                          value={communityValue}
-                          options={communityOptions}
-                          onChange={this.handleCommunityChange}
-                          multi
-                         placeholder="Select Community"
-                        />
-                    </div>
-            }
-
-            return (
-                <div>
-                    <h2>Filters</h2>
-                    <form>
-                        <div>
-                          <h4>In-degree: {minInDegreeValue} - {maxInDegreeValue}</h4>
-                         <Range min={minInDegree} max={maxInDegree} value={[minInDegreeValue, maxInDegreeValue]} onChange={this.handleInDegreeChange} />
-                        </div>
-                        <div>
-                          <h4><select value={sliderAttributeValue} onChange={this.handleSliderAttributeChange}>
-                            {listSliderAttributes}
-                          </select>: {minSliderValue} - {maxSliderValue}</h4>
-                             <Range min={slider_minmax[0]} max={slider_minmax[1]} value={[minSliderValue, maxSliderValue]} onChange={this.handleSliderChange} />
-                        </div>
-                        <div>
-                            <label> Adjust layout for slider: 
-                                <input name="adjustLayout" type="checkbox" checked={adjustLayout} onChange={this.handleAdjustLayoutChange}/>
-                            </label>
-                        </div>
-                        <div>
-                          <h4>Rechtsgebied</h4>
-                        <Select
-                          name="subject"
-                          value={subjectValue}
-                          options={subjectOptions}
-                          onChange={this.handleSubjectChange}
-                          multi
-                         placeholder="Select Subject"
-                        />
-                        </div>
-                        <div>
-                          <h4>Instantie</h4>
-                        <Select
-                              name="creator"
-                              value={creatorValue}
-                              options={creatorOptions}
-                              onChange={this.handleCreatorChange}
-                              multi
-                             placeholder="Select Creator"
-                            />
-                        </div>
-                        {communityFilter}
-                        <div>
-                            <h4>Selection </h4>
-                            <label> Filter selected:
-                                <input name="filterSelected" type="checkbox" checked={filterSelected} onChange={this.handleFilterSelectedChange}/>
-                            </label>
-                        </div>
-                        <h2> Appearances </h2>
-                        <div>
-                          <h4>Node Size</h4>
-                          <select value={sizeAttributeValue} onChange={this.handleSizeAttributeChange}>
-                            {listSizeAttributes}
-                          </select>
-                        </div>
-                        <div>
-                          <h4>Node Color</h4>
-                          <select value={colorAttributeValue} onChange={this.handleColorAttributeChange}>
-                            <option value="none">none</option>
-                            {listColorAttributes}
-                          </select>
-                        </div>
-                    </form>
-                </div>
-            );
-        } else {
-            return null;
-        }
-    }
+  }
 }
 
 export default FilterPane;
