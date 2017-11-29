@@ -5,8 +5,8 @@ import {
     Filter,
     NOverlap,
     SigmaEnableWebGL, // will use webgl renderer if supported by browser
-    //RandomizeNodePositions,
-    //RelativeSize
+    RandomizeNodePositions,
+    RelativeSize
 } from 'react-sigma';
 import ForceAtlas2 from './ForceAtlas2';
 import GraphProperties from './GraphProperties';

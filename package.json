@@ -4,12 +4,15 @@
     "private": true,
     "homepage": "https://nlesc.github.io/case-law-app",
     "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
         "enzyme": "^2.9.1",
         "gh-pages": "^0.12.0",
         "react-addons-test-utils": "^15.6.2",
         "react-scripts": "^0.7.0"
     },
     "dependencies": {
+        "babel-preset-es2015": "^6.24.1",
         "colormap": "^2.3.0",
         "papaparse": "^4.3.6",
         "rc-slider": "^8.4.0",
@@ -24,9 +27,9 @@
         "build": "react-scripts build",
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
-        "deploy": "npm run build&&gh-pages -d build"
+        "deploy": "npm run build && gh-pages -d build"
     },
     "engines": {
-  "node": "8.9.1"
-}
+        "node": "8.9.1"
+    }
 }
