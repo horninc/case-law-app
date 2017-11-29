@@ -7,7 +7,6 @@ import FilterPane from './components/FilterPane';
 import LoadData from './components/LoadData';
 import DownloadData from './components/DownloadData';
 
-
 class App extends React.Component {
 
   constructor(props) {

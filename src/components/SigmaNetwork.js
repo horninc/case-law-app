@@ -4,7 +4,7 @@ import {
   EdgeShapes,
   Filter,
   NOverlap,
-  SigmaEnableWebGL, // will use webgl renderer if supported by browser
+  SigmaEnableSVG, // will use webgl renderer if supported by browser
   RandomizeNodePositions,
   RelativeSize
 } from 'react-sigma';
@@ -160,6 +160,7 @@ class SigmaNetwork extends Sigma {
         <div
           ref={this.initRenderer}
           style={this.props.style}
+          renderer = "svg"
         >
           <EdgeShapes
             default="arrow"
