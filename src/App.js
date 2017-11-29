@@ -24,7 +24,7 @@ class App extends React.Component {
     this.getNrVisibleNodes = this.getNrVisibleNodes.bind(this);
     this.setVisibleNodes = this.setVisibleNodes.bind(this);
     this.deactivate = this.deactivate.bind(this);
-    const data = require('./data/44.json');
+    const data = require('./data/41.json');
     this.state = {
       data: data,
       loading: false,
