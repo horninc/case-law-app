@@ -65,10 +65,11 @@ It accepts all the parameters of ForceAtlas2 described on its github page:
 class ForceAtlas2 extends React.Component {
     state: State;
     props: Props;
-    static defaultProps: DefaultProps = {
-      worker: true,
-      linLogMode: true
-    }
+    static defaultProps: DefaultProps
+    //  = {
+    //   worker: true,
+    //   linLogMode: true
+    // }
 
     constructor(props: Props) {
       super(props);

@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import 'src/App.css';
 
 import Network from './components/Network';
 import AttributesPane from './components/AttributesPane';
@@ -24,7 +24,7 @@ class App extends React.Component {
     this.getNrVisibleNodes = this.getNrVisibleNodes.bind(this);
     this.setVisibleNodes = this.setVisibleNodes.bind(this);
     this.deactivate = this.deactivate.bind(this);
-    const data = require('./data/data.json');
+    const data = require('./data/44.json');
     this.state = {
       data: data,
       loading: false,
