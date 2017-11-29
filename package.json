@@ -25,5 +25,8 @@
         "test": "react-scripts test --env=jsdom",
         "eject": "react-scripts eject",
         "deploy": "npm run build&&gh-pages -d build"
-    }
+    },
+    "engines": {
+  "node": "8.9.1"
+}
 }
