@@ -3,7 +3,10 @@ import {
     Sigma,
     EdgeShapes,
     Filter,
-    NOverlap
+    NOverlap,
+    SigmaEnableWebGL, // will use webgl renderer if supported by browser
+    //RandomizeNodePositions,
+    //RelativeSize
 } from 'react-sigma';
 import ForceAtlas2 from './ForceAtlas2';
 import GraphProperties from './GraphProperties';
@@ -112,8 +115,6 @@ class SigmaNetwork extends Sigma {
                 nodesBySelected(filterSelected)(node);
         };
 
-
-
         const {
             inDegreeValue,
             subjectValue,
@@ -128,15 +129,17 @@ class SigmaNetwork extends Sigma {
         } = this.props.filterState;
         const nrNodes = this.props.graph.nodes.length;
         const nrEdges = this.props.graph.edges.length;
-        const iterationsPerRender = Math.max(Math.ceil(Math.log(nrEdges) / Math.log(10)), 1);
-        const timeout = Math.max(nrNodes * 25, 3000);
+        // TODO: why is this riduculous calc here? Math.log is not a very rational decision.
+        //const iterationsPerRender = Math.max(Math.ceil(Math.log(nrEdges) / 2), 1);
+        let iterationsPerRender = 4;
+        const timeout = nrNodes * 25;
         let forceLayout = <EmptyComponent/>; //<span></span>;
         if (this.props.mountLayout) {
-            forceLayout = <ForceAtlas2 
-                                iterationsPerRender={iterationsPerRender}  timeout={timeout}   gravity={1.5}                
-                                scalingRatio={1.3} rerun={false} >    
-                            <NOverlap 
-                                nodeMargin={1.0} duration={1000} speed={5} maxIterations={50} gridSize={20} easing="quadraticInOut"
+            forceLayout = <ForceAtlas2
+                                iterationsPerRender={iterationsPerRender} timeout={timeout} gravity={1.5}
+                                scalingRatio={1.6} rerun={false} batchEdgesDrawing={true} >
+                            <NOverlap
+                                nodeMargin={1.0} duration={1000} speed={5} maxIterations={50} gridSize={20} easing="cubicInOut"
                                 />
                          </ForceAtlas2>
         }
